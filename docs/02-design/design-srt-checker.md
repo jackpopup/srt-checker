@@ -424,42 +424,35 @@ interface AppStore {
 
 ### 6.3 컴포넌트 트리
 
+> 프로젝트 규모에 맞게 핵심 컴포넌트만 별도 파일로 분리하고, 나머지는 페이지 내 인라인으로 구현.
+
 ```
-Layout
-├── Header (로고 + 네비게이션)
+Layout (layout.tsx)
+├── Header (components/layout/Header.tsx)
 │
 ├── MainPage (page.tsx)
-│   ├── FileUploader              # state: idle
-│   │   ├── DropZone
-│   │   └── FileInfo (파일명, 자막 수)
+│   ├── FileUploader (components/upload/FileUploader.tsx)
+│   │   └── 드래그앤드롭 + 파일 검증 (인라인)
 │   │
-│   ├── CheckingProgress          # state: checking
-│   │   └── ProgressBar (배치 진행률)
+│   ├── 검사 진행 UI (인라인 스피너)          # state: checking
 │   │
-│   ├── ResultPanel               # state: result
-│   │   ├── StatsBar (검사 통계)
-│   │   ├── BulkActions (전체선택/해제)
-│   │   ├── CorrectionList
-│   │   │   └── CorrectionItem (반복)
-│   │   │       ├── Checkbox
-│   │   │       ├── DiffView (원본 vs 수정)
-│   │   │       ├── ReasonBadge (수정 이유)
-│   │   │       └── TypeBadge (수정 유형)
-│   │   └── DownloadButton
+│   ├── ResultPanel (components/result/ResultPanel.tsx)
+│   │   ├── 통계 바 (인라인)
+│   │   ├── 전체선택/해제 (인라인)
+│   │   ├── CorrectionItem (components/result/CorrectionItem.tsx)
+│   │   │   ├── Checkbox + DiffView (components/result/DiffView.tsx)
+│   │   │   └── 유형 뱃지 + 사유 (인라인)
+│   │   └── 다운로드 버튼 (인라인)
 │   │
-│   └── ErrorDisplay              # state: error
+│   └── 에러 표시 (인라인)                    # state: error
 │
-└── TermsPage (terms/page.tsx)
-    ├── TermSearchBar
-    ├── CategoryFilter
-    ├── TermTable
-    │   └── TermRow (반복)
-    │       ├── TermName + Aliases
-    │       ├── Description
-    │       └── EditButton / DeleteButton
-    ├── AddTermModal
-    ├── EditTermModal
-    └── ConfluenceSyncButton
+└── TermsPage (terms/page.tsx) — 단일 "use client" 컴포넌트
+    ├── 검색 + 카테고리 필터 (인라인)
+    ├── 용어 테이블 + 수정/삭제 버튼 (인라인)
+    ├── 용어 추가 모달 (인라인)
+    ├── 용어 수정 모달 (인라인)
+    ├── 삭제 확인 다이얼로그 (인라인)
+    └── Confluence 동기화 (인라인)
 ```
 
 ### 6.4 CorrectionItem 상세 설계
@@ -588,55 +581,43 @@ srt-checker/
 │   ├── app/
 │   │   ├── layout.tsx                     # 공통 레이아웃
 │   │   ├── page.tsx                       # 메인 (업로드+검사+결과)
+│   │   ├── globals.css                    # Tailwind CSS
 │   │   ├── terms/
-│   │   │   └── page.tsx                   # 용어 사전 관리
+│   │   │   └── page.tsx                   # 용어 사전 관리 (CRUD+검색+필터)
 │   │   └── api/
 │   │       ├── check-grammar/
 │   │       │   └── route.ts               # 맞춤법 검사 API
 │   │       ├── terms/
-│   │       │   ├── route.ts               # 용어 CRUD
+│   │       │   ├── route.ts               # 용어 목록/생성 (GET, POST)
+│   │       │   ├── [id]/
+│   │       │   │   └── route.ts           # 용어 수정/삭제 (PUT, DELETE)
 │   │       │   └── seed/
 │   │       │       └── route.ts           # 초기 데이터 시딩
 │   │       └── confluence/
-│   │           └── route.ts               # Confluence 동기화
+│   │           └── route.ts               # Confluence 동기화 + bkend 저장
 │   ├── lib/
-│   │   ├── srt-parser.ts                  # SRT 파싱/조립
-│   │   ├── claude.ts                      # Claude API 클라이언트
-│   │   ├── bkend.ts                       # bkend 클라이언트
-│   │   ├── terminology.ts                 # 용어 사전 로직
-│   │   └── diff.ts                        # 인라인 diff 알고리즘
+│   │   ├── srt-parser.ts                  # SRT 파싱/조립 (표준 + Premiere Pro)
+│   │   ├── claude.ts                      # Claude API 클라이언트 (30s 타임아웃)
+│   │   ├── bkend.ts                       # bkend REST 클라이언트
+│   │   ├── terminology.ts                 # 용어 사전 로직 + 캐시 + 폴백
+│   │   └── diff.ts                        # 단어 단위 diff 알고리즘
 │   ├── components/
 │   │   ├── layout/
-│   │   │   └── Header.tsx
+│   │   │   └── Header.tsx                 # 로고 + 네비게이션
 │   │   ├── upload/
-│   │   │   ├── FileUploader.tsx
-│   │   │   └── DropZone.tsx
-│   │   ├── result/
-│   │   │   ├── ResultPanel.tsx
-│   │   │   ├── StatsBar.tsx
-│   │   │   ├── CorrectionList.tsx
-│   │   │   ├── CorrectionItem.tsx
-│   │   │   ├── DiffView.tsx
-│   │   │   └── DownloadButton.tsx
-│   │   ├── terms/
-│   │   │   ├── TermTable.tsx
-│   │   │   ├── TermRow.tsx
-│   │   │   ├── TermSearchBar.tsx
-│   │   │   ├── CategoryFilter.tsx
-│   │   │   ├── AddTermModal.tsx
-│   │   │   └── ConfluenceSyncButton.tsx
-│   │   └── common/
-│   │       ├── Badge.tsx
-│   │       ├── Button.tsx
-│   │       ├── Modal.tsx
-│   │       └── ProgressBar.tsx
+│   │   │   └── FileUploader.tsx           # 드래그앤드롭 + 파일 검증
+│   │   └── result/
+│   │       ├── ResultPanel.tsx            # 결과 컨테이너 (통계+목록+다운로드)
+│   │       ├── CorrectionItem.tsx         # 개별 교정 항목
+│   │       └── DiffView.tsx              # 원본/수정 diff 하이라이트
+│   ├── data/
+│   │   └── terminology-dictionary.json    # 내장 폴백 용어 사전 (170+)
 │   ├── hooks/
-│   │   ├── useCheckGrammar.ts             # 검사 API 호출 훅
-│   │   └── useTerms.ts                    # 용어 CRUD 훅
+│   │   └── useCheckGrammar.ts             # 검사 API 호출 훅
 │   └── types/
-│       ├── srt.ts                         # SRT 관련 타입
+│       ├── srt.ts                         # SRT 관련 타입 (표준 + Premiere)
 │       ├── correction.ts                  # 교정 관련 타입
-│       └── term.ts                        # 용어 관련 타입
+│       └── term.ts                        # 용어 + SyncLog 타입
 ├── public/
 │   └── favicon.ico
 ├── .env.local                             # 환경 변수 (gitignore)
