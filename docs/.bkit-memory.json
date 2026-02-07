@@ -1,8 +1,11 @@
 {
-  "sessionCount": 10,
+  "sessionCount": 12,
   "lastSession": {
-    "startedAt": "2026-02-07T08:34:06.060Z",
+    "startedAt": "2026-02-07T09:01:09.931Z",
     "platform": "claude",
     "level": "Dynamic"
-  }
+  },
+  "feature": "srt-checker",
+  "phase": "completed",
+  "matchRate": 91
 }

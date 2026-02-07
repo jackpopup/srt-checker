@@ -543,10 +543,10 @@ function computeWordDiff(original: string, corrected: string): {
 # Claude API
 ANTHROPIC_API_KEY=sk-ant-...
 
-# bkend
-BKEND_BASE_URL=https://api.bkend.ai
-BKEND_API_KEY=...
-BKEND_PROJECT_ID=...
+# bkend (enduser API 패턴 — API Key 불필요)
+NEXT_PUBLIC_BKEND_API_URL=https://api-enduser.bkend.ai
+NEXT_PUBLIC_BKEND_PROJECT_ID=...
+NEXT_PUBLIC_BKEND_ENVIRONMENT=dev
 
 # Confluence (선택)
 CONFLUENCE_URL=https://popupstudio.atlassian.net/wiki
