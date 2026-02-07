@@ -1,19 +1,30 @@
 import { TermEntry } from "@/types/term";
 
-const BKEND_BASE_URL = process.env.BKEND_BASE_URL || "";
-const BKEND_API_KEY = process.env.BKEND_API_KEY || "";
-const BKEND_PROJECT_ID = process.env.BKEND_PROJECT_ID || "";
+const BKEND_API_URL = process.env.NEXT_PUBLIC_BKEND_API_URL || "https://api-enduser.bkend.ai";
+const BKEND_PROJECT_ID = process.env.NEXT_PUBLIC_BKEND_PROJECT_ID || "";
+const BKEND_ENVIRONMENT = process.env.NEXT_PUBLIC_BKEND_ENVIRONMENT || "dev";
 
 function headers() {
   return {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${BKEND_API_KEY}`,
+    "X-Project-Id": BKEND_PROJECT_ID,
+    "X-Environment": BKEND_ENVIRONMENT,
   };
 }
 
 function url(collection: string, id?: string) {
-  const base = `${BKEND_BASE_URL}/projects/${BKEND_PROJECT_ID}/collections/${collection}/documents`;
+  const base = `${BKEND_API_URL}/data/${collection}`;
   return id ? `${base}/${id}` : base;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data: {
+    items: T[];
+    total: number;
+    page: number;
+    limit: number;
+  };
 }
 
 export async function getTerms(
@@ -35,8 +46,8 @@ export async function getTerms(
     return [];
   }
 
-  const data = await res.json();
-  return data.documents || data || [];
+  const json: ApiResponse<TermEntry> = await res.json();
+  return json.data.items;
 }
 
 export async function createTerm(

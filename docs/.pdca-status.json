@@ -1,14 +1,15 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-02-06T03:00:00.000Z",
+  "lastUpdated": "2026-02-07T07:52:27.318Z",
   "activeFeatures": [
-    "srt-checker"
+    "srt-checker",
+    "scripts"
   ],
   "primaryFeature": "srt-checker",
   "features": {
     "srt-checker": {
-      "phase": "check",
-      "phaseNumber": 4,
+      "phase": "do",
+      "phaseNumber": 3,
       "matchRate": 95.4,
       "iterationCount": 1,
       "requirements": [],
@@ -18,9 +19,22 @@
       },
       "timestamps": {
         "started": "2026-02-06T02:12:42.581Z",
-        "lastUpdated": "2026-02-06T03:00:00.000Z"
+        "lastUpdated": "2026-02-07T07:49:27.318Z"
       },
-      "lastFile": "c:\\GitHub\\srt-checker\\docs\\02-design\\design-srt-checker.md"
+      "lastFile": "c:\\GitHub\\srt-checker\\src\\lib\\bkend.ts"
+    },
+    "scripts": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-07T07:50:20.608Z",
+        "lastUpdated": "2026-02-07T07:52:27.318Z"
+      },
+      "lastFile": "c:\\GitHub\\srt-checker\\scripts\\migrate-terminology-to-bkend.js"
     }
   },
   "pipeline": {
@@ -31,7 +45,7 @@
   "session": {
     "startedAt": "2026-02-06T02:12:42.581Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-02-06T02:47:03.646Z"
+    "lastActivity": "2026-02-07T07:52:27.318Z"
   },
   "history": [
     {
@@ -79,6 +93,36 @@
     {
       "timestamp": "2026-02-06T02:47:03.646Z",
       "feature": "srt-checker",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-07T07:33:31.648Z",
+      "feature": "srt-checker",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-07T07:49:03.032Z",
+      "feature": "srt-checker",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-07T07:49:27.318Z",
+      "feature": "srt-checker",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-07T07:50:20.608Z",
+      "feature": "scripts",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-07T07:52:27.318Z",
+      "feature": "scripts",
       "phase": "do",
       "action": "updated"
     }

@@ -1,0 +1,96 @@
+{
+  "timestamp": "2026-02-07T07:45:15.484Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-02-07T07:33:31.648Z",
+    "activeFeatures": [
+      "srt-checker"
+    ],
+    "primaryFeature": "srt-checker",
+    "features": {
+      "srt-checker": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": 95.4,
+        "iterationCount": 1,
+        "requirements": [],
+        "documents": {
+          "plan": "docs/01-plan/plan-srt-checker.md",
+          "design": "docs/02-design/design-srt-checker.md"
+        },
+        "timestamps": {
+          "started": "2026-02-06T02:12:42.581Z",
+          "lastUpdated": "2026-02-07T07:33:31.648Z"
+        },
+        "lastFile": "c:\\GitHub\\srt-checker\\src\\lib\\bkend.ts"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 1,
+      "level": "Dynamic",
+      "phaseHistory": []
+    },
+    "session": {
+      "startedAt": "2026-02-06T02:12:42.581Z",
+      "onboardingCompleted": false,
+      "lastActivity": "2026-02-07T07:33:31.648Z"
+    },
+    "history": [
+      {
+        "timestamp": "2026-02-06T02:31:36.232Z",
+        "feature": "[id]",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-06T02:32:03.393Z",
+        "feature": "terms",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-06T02:32:15.641Z",
+        "feature": "terms",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-06T02:32:25.074Z",
+        "feature": "terms",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-06T02:32:34.896Z",
+        "feature": "terms",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-06T02:32:50.893Z",
+        "feature": "terms",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-06T02:46:36.116Z",
+        "feature": "confluence",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-06T02:47:03.646Z",
+        "feature": "srt-checker",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-07T07:33:31.648Z",
+        "feature": "srt-checker",
+        "phase": "do",
+        "action": "updated"
+      }
+    ]
+  }
+}
