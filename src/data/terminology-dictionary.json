@@ -242,8 +242,15 @@
     },
     {
       "id": 33,
+      "term": "Gemini",
+      "aliases": ["제미나이", "제미니", "Gemini AI", "구글 제미나이", "구글 제미니"],
+      "category": "ai_tool",
+      "description": "구글이 개발한 AI 모델 및 서비스"
+    },
+    {
+      "id": 171,
       "term": "Gemini CLI",
-      "aliases": ["제미나이 CLI", "Gemini CLI"],
+      "aliases": ["제미나이 CLI", "제미니 CLI"],
       "category": "ai_tool",
       "description": "구글이 만든 터미널 기반 AI 코딩 도구"
     },
