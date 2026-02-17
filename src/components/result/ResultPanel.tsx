@@ -26,6 +26,19 @@ export default function ResultPanel({
   const [selected, setSelected] = useState<Set<number>>(
     () => new Set(corrections.map((_, i) => i))
   );
+  const [edits, setEdits] = useState<Map<number, string>>(() => new Map());
+
+  // Lookup: subtitle index → { startTime, endTime }
+  const timecodeMap = useMemo(() => {
+    const map = new Map<number, { startTime: string; endTime: string }>();
+    for (const entry of entries) {
+      map.set(entry.index, {
+        startTime: entry.startTime,
+        endTime: entry.endTime,
+      });
+    }
+    return map;
+  }, [entries]);
 
   const allSelected = selected.size === corrections.length;
   const noneSelected = selected.size === 0;
@@ -50,13 +63,31 @@ export default function ResultPanel({
     });
   }
 
+  function handleEdit(correctionIndex: number, newText: string) {
+    setEdits((prev) => {
+      const next = new Map(prev);
+      // If text matches original suggestion, remove override
+      if (newText === corrections[correctionIndex].corrected) {
+        next.delete(correctionIndex);
+      } else {
+        next.set(correctionIndex, newText);
+      }
+      return next;
+    });
+  }
+
   const downloadName = useMemo(() => {
     const base = fileName.replace(/\.srt$/i, "");
     return `${base}_checked.srt`;
   }, [fileName]);
 
   function handleDownload() {
-    const corrected = applyCorrections(entries, corrections, selected);
+    // Apply user edits to corrections before applying
+    const effectiveCorrections = corrections.map((c, i) => {
+      const override = edits.get(i);
+      return override !== undefined ? { ...c, corrected: override } : c;
+    });
+    const corrected = applyCorrections(entries, effectiveCorrections, selected);
     const srtContent = buildSrt(corrected, format);
     const blob = new Blob([srtContent], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -150,14 +181,21 @@ export default function ResultPanel({
 
       {/* Correction list */}
       <div className="flex flex-col gap-3">
-        {corrections.map((correction, i) => (
-          <CorrectionItem
-            key={`${correction.index}-${i}`}
-            correction={correction}
-            checked={selected.has(i)}
-            onToggle={() => toggle(i)}
-          />
-        ))}
+        {corrections.map((correction, i) => {
+          const tc = timecodeMap.get(correction.index);
+          return (
+            <CorrectionItem
+              key={`${correction.index}-${i}`}
+              correction={correction}
+              checked={selected.has(i)}
+              startTime={tc?.startTime}
+              endTime={tc?.endTime}
+              editedText={edits.get(i)}
+              onToggle={() => toggle(i)}
+              onEdit={(newText) => handleEdit(i, newText)}
+            />
+          );
+        })}
       </div>
 
       {/* Bottom download */}
